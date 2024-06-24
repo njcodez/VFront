@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import * as htmlToImage from 'html-to-image';
 
+interface FormData {
+    title: string;
+    subject: string;
+    courseCode: string;
+    facultyName: string;
+    studentName: string;
+    registrationNumber: string;
+  }
 
 interface FormProps {
-  onChange: (formData: any) => void;
+  onChange: (formData: FormData) => void;
 }
 
 const Form: React.FC<FormProps> = ({ onChange }) => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     title: '',
     subject: '',
     courseCode: '',
@@ -15,7 +23,7 @@ const Form: React.FC<FormProps> = ({ onChange }) => {
     studentName: '',
     registrationNumber: ''
   });
-
+  
   const [showCourseCode, setShowCourseCode] = useState(false);
   const [showFacultyName, setShowFacultyName] = useState(false);
 
@@ -26,22 +34,24 @@ const Form: React.FC<FormProps> = ({ onChange }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     let updatedValue = value;
-
+  
     switch (name) {
-      case "title":
-      case "subject":
       case "studentName":
       case "facultyName":
+        case "title":
+            case "subject":
+        
         updatedValue = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "courseCode":
       case "registrationNumber":
+    
         updatedValue = value.toUpperCase().replace(/[^a-zA-Z0-9]/g, '');
         break;
       default:
         break;
     }
-
+  
     setFormData(prevData => ({
       ...prevData,
       [name]: updatedValue
@@ -53,7 +63,7 @@ const Form: React.FC<FormProps> = ({ onChange }) => {
 
   const handleCopyToClipboard = async (event: React.FormEvent) => {
     event.preventDefault();
-    const a4Div = document.querySelector('.a4-div') as HTMLElement;
+    const a4Div = document!.querySelector('.a4-div') as HTMLElement;
   
     if (a4Div) {
       try {
@@ -114,31 +124,118 @@ const Form: React.FC<FormProps> = ({ onChange }) => {
   
   
   return (
-    <form>
+    <form
+      onSubmit={handleCopyToClipboard}
+       className="bg-white p-8 rounded-lg shadow-lg ring- ring-white ring-opacity-50 w-full max-w-md space-y-6 mt-24"
+    >
+      <h2 className="text-2xl font-bold text-center mb-4 text-purple-700">⚡Generate Cover Pages⚡ </h2>
       <div>
-        <label>Title:</label>
-        <input type="text" name="title" value={formData.title} onChange={handleChange} />
+        <label className="block text-gray-700">Student Name</label>
+        <input
+          type="text"
+          name="studentName"
+          placeholder="Enter student name"
+          value={formData.studentName}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
       </div>
       <div>
-        <label>Subject:</label>
-        <input type="text" name="subject" value={formData.subject} onChange={handleChange} />
+        <label className="block text-gray-700">Registration Number</label>
+        <input
+          type="text"
+          name="registrationNumber"
+          placeholder="Enter registration number"
+          value={formData.registrationNumber}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
       </div>
       <div>
-        <label>Course Code:</label>
-        <input type="text" name="courseCode" value={formData.courseCode} onChange={handleChange} />
+        <label className="block text-gray-700">
+          Title
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter title"
+            value={formData.title}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </label>
       </div>
       <div>
-        <label>Faculty Name:</label>
-        <input type="text" name="facultyName" value={formData.facultyName} onChange={handleChange} />
+        <label className="block text-gray-700">
+          Subject
+          <input
+            type="text"
+            name="subject"
+            placeholder="Enter subject"
+            value={formData.subject}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </label>
       </div>
-      <div>
-        <label>Student Name:</label>
-        <input type="text" name="studentName" value={formData.studentName} onChange={handleChange} />
+      <div className="toggle-switch-container">
+        <label className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={showCourseCode}
+            onChange={() => {
+              setShowCourseCode(prev => !prev);
+              if (!showCourseCode) {
+                setFormData(prevData => ({ ...prevData, courseCode: '' }));
+              }
+            }}
+          />
+          <span className="toggle-slider round"></span>
+        </label>
+        <span className="toggle-label">Course Code</span>
+        {showCourseCode && (
+          <input
+            type="text"
+            name="courseCode"
+            placeholder="Enter course code"
+            value={formData.courseCode}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        )}
       </div>
-      <div>
-        <label>Registration Number:</label>
-        <input type="text" name="registrationNumber" value={formData.registrationNumber} onChange={handleChange} />
+      <div className="toggle-switch-container">
+        <label className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={showFacultyName}
+            onChange={() => {
+              setShowFacultyName(prev => !prev);
+              if (!showFacultyName) {
+                setFormData(prevData => ({ ...prevData, facultyName: '' }));
+              }
+            }}
+          />
+          <span className="toggle-slider round"></span>
+        </label>
+        <span className="toggle-label">Faculty Name</span>
+        {showFacultyName && (
+          <input
+            type="text"
+            name="facultyName"
+            placeholder="Enter faculty name"
+            value={formData.facultyName}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        )}
       </div>
+
+      <button
+        type="submit"
+        className="w-full py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+      >
+        Copy to clipboard😉
+      </button>
     </form>
   );
 };

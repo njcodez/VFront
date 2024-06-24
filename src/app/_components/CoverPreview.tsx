@@ -1,5 +1,5 @@
 import React from "react";
-import Image from "next/image";
+
 interface CoverPreviewProps {
   formData: {
     title: string;
@@ -25,7 +25,7 @@ const CoverPreview: React.FC<CoverPreviewProps> = ({ formData }) => {
     <div className="bg-white transform a4-div flex h-full w-fullitems-center justify-center shadow-xl scale-75">
       <div className="a4-content flex flex-col h-full justify-between">
         <div className="flex justify-center mt-8 mb-8">
-          <Image
+          <img
             id="collegeLogo"
             src="vit.png"
             alt="College Logo"
