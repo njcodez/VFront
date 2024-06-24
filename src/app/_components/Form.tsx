@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import * as htmlToImage from 'html-to-image';
 
+interface FormData {
+    title: string;
+    subject: string;
+    courseCode: string;
+    facultyName: string;
+    studentName: string;
+    registrationNumber: string;
+  }
 
 interface FormProps {
-  onChange: (formData: any) => void;
+  onChange: (formData: FormData) => void;
 }
 
 const Form: React.FC<FormProps> = ({ onChange }) => {
@@ -55,7 +63,7 @@ const Form: React.FC<FormProps> = ({ onChange }) => {
 
   const handleCopyToClipboard = async (event: React.FormEvent) => {
     event.preventDefault();
-    const a4Div = document.querySelector('.a4-div') as HTMLElement;
+    const a4Div = document!.querySelector('.a4-div') as HTMLElement;
   
     if (a4Div) {
       try {
