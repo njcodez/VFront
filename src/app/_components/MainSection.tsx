@@ -1,10 +1,13 @@
+// MainSection.tsx
+
 "use client";
 import React, { useState } from 'react';
 import Form from './Form';
 import CoverPreview from './CoverPreview';
+import { FormData } from '../interfaces/interfaces';
 
 const MainSection: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     title: '',
     subject: '',
     courseCode: '',
@@ -13,8 +16,11 @@ const MainSection: React.FC = () => {
     registrationNumber: ''
   });
 
-  const handleFormDataChange = (newFormData: any) => {
-    setFormData(newFormData);
+  const handleFormDataChange = (newFormData: Partial<FormData>) => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      ...newFormData
+    }));
   };
 
   return (
