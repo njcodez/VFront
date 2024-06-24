@@ -1,3 +1,5 @@
+// MainSection.tsx
+
 "use client";
 import React, { useState } from 'react';
 import Form from './Form';
@@ -23,7 +25,7 @@ const MainSection: React.FC = () => {
     registrationNumber: ''
   });
 
-  const handleFormDataChange = (newFormData: FormData) => {
+  const handleFormDataChange = (newFormData: any) => {
     setFormData(newFormData);
   };
 
