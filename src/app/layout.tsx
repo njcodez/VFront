@@ -1,4 +1,6 @@
 import "~/styles/globals.css";
+import { Analytics } from "@vercel/analytics/react";
+
 
 import { GeistSans } from "geist/font/sans";
 
@@ -23,6 +25,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer /></main>
+        <Analytics />
       </body>
     </html>
   );
